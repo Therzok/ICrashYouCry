@@ -1,0 +1,69 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0-macos</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>true</ImplicitUsings>
+    <SupportedOSPlatformVersion>10.14</SupportedOSPlatformVersion>
+
+    <!-- Enable crash reporting -->
+    <MonoBundlingExtraArgs>--setenv:COMPlus_DbgEnableFastHeapDumps=1 --setenv:COMPlus_DbgEnableMiniDump=1 --setenv:COMPlus_EnableCrashReport=1 --setenv:COMPlus_EnableDumpOnSigTerm=1 --marshal-objectivec-exceptions=throwmanagedexception --marshal-managed-exceptions=throwobjectivecexception --package-debug-symbols:true</MonoBundlingExtraArgs>
+    <!-- Generate dSYM files, we need native debugging information -->
+    <NoDSymUtil>False</NoDSymUtil>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>embedded</DebugType>
+    <Deterministic>True</Deterministic>
+    <LinkMode>None</LinkMode>
+    <TrimMode>copyused</TrimMode>
+
+    <!-- Ultra cool, setup -->
+    <RunCommand>lldb</RunCommand>
+    <RunArguments>"$(TargetDir)/$(AssemblyName).app" -o run -o "process handle -s false SIGUSR1 SIGUSR2" -o "loadsymbols" -o "continue" -- </RunArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <UseSGen>false</UseSGen>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <UseSGen>false</UseSGen>
+  </PropertyGroup>
+  <ItemGroup>
+    <ImageAsset Update="Assets.xcassets\Contents.json">
+      <Link>Assets.xcassets\Contents.json</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\AppIcon-512%402x.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\AppIcon-512%402x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\AppIcon-32%402x.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\AppIcon-32%402x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\AppIcon-16%402x.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\AppIcon-16%402x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\AppIcon-512.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\AppIcon-512.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\AppIcon-128.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\AppIcon-128.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\AppIcon-16.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\AppIcon-16.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\AppIcon-32.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\AppIcon-32.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Contents.json">
+      <Link>Assets.xcassets\AppIcon.appiconset\Contents.json</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\AppIcon-256.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\AppIcon-256.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\AppIcon-256%402x.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\AppIcon-256%402x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\AppIcon-128%402x.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\AppIcon-128%402x.png</Link>
+    </ImageAsset>
+  </ItemGroup>
+</Project>
