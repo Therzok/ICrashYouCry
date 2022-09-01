@@ -3,16 +3,16 @@ using AppKit;
 
 namespace ICrashYouCry
 {
-    [Register("ButtonViewController")]
-    public class ButtonViewController : NSViewController
+    public abstract class ButtonViewController : NSViewController
     {
         public override void LoadView()
         {
-            base.LoadView();
+            // base.LoadView(); This causes a native exception
 
             // Create a simple button
-            var button = new NSButton
+            var button = new NSButton(new CGRect(0, 0, 40, 50))
             {
+                TranslatesAutoresizingMaskIntoConstraints = false,
                 Title = "dotnet sauce",
                 Target = this,
                 Action = new ObjCRuntime.Selector("clicked:"),
@@ -22,10 +22,24 @@ namespace ICrashYouCry
         }
 
         [Export("clicked:")]
-        public void Clicked(NSObject sender)
+        public abstract void Clicked(NSObject sender);
+    }
+
+    [Register("ButtonViewControllerNative")]
+    public class ButtonViewControllerNative : ButtonViewController
+    {
+        public override void Clicked(NSObject sender)
         {
-            // Triggers a crash at the end of the UI loop, in native.
             View.Superview.DangerousAutorelease();
+        }
+    }
+
+    [Register("ButtonViewControllerManaged")]
+    public class ButtonViewControllerManaged : ButtonViewController
+    {
+        public override void Clicked(NSObject sender)
+        {
+            throw new Exception();
         }
     }
 }

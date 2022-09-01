@@ -5,11 +5,10 @@ namespace ICrashYouCry;
 
 public partial class ViewController : NSViewController
 {
-    readonly ButtonViewController buttonViewController;
+    readonly ButtonViewController buttonViewControllerManaged = new ButtonViewControllerManaged();
+    readonly ButtonViewController buttonViewControllerNative = new ButtonViewControllerNative();
     protected ViewController(NativeHandle handle) : base(handle)
     {
-        buttonViewController = new ButtonViewController();
-        AddChildViewController(buttonViewController);
     }
 
     public override void ViewDidLoad()
@@ -30,7 +29,11 @@ public partial class ViewController : NSViewController
 
         stackView.WidthAnchor.ConstraintEqualTo(safeArea.WidthAnchor).Active = true;
 
-        stackView.AddArrangedSubview(buttonViewController.View);
+        AddChildViewController(buttonViewControllerManaged);
+        stackView.AddArrangedSubview(buttonViewControllerManaged.View);
+
+        AddChildViewController(buttonViewControllerNative);
+        stackView.AddArrangedSubview(buttonViewControllerNative.View);
     }
 
     static (NSScrollView, NSStackView) CreateContent(NSLayoutGuide safeArea)
@@ -43,9 +46,10 @@ public partial class ViewController : NSViewController
         var stackView = new NSStackView
         {
             TranslatesAutoresizingMaskIntoConstraints = false,
-            Orientation = NSUserInterfaceLayoutOrientation.Vertical
+            Orientation = NSUserInterfaceLayoutOrientation.Vertical,
+            Spacing = 0,
         };
-        scrollView.AddSubview(stackView);
+        scrollView.DocumentView = stackView;
 
         // Fill stackview to container, but constrain to safe area
         stackView.LeadingAnchor.ConstraintEqualTo(scrollView.LeadingAnchor).Active = true;
