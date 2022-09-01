@@ -7,6 +7,7 @@ public partial class ViewController : NSViewController
 {
     readonly ButtonViewController buttonViewControllerManaged = new ButtonViewControllerManaged();
     readonly ButtonViewController buttonViewControllerNative = new ButtonViewControllerNative();
+    readonly ButtonViewController buttonViewControllerNativeAuto = new ButtonViewControllerNativeAuto();
     protected ViewController(NativeHandle handle) : base(handle)
     {
     }
@@ -34,6 +35,9 @@ public partial class ViewController : NSViewController
 
         AddChildViewController(buttonViewControllerNative);
         stackView.AddArrangedSubview(buttonViewControllerNative.View);
+
+        AddChildViewController(buttonViewControllerNativeAuto);
+        stackView.AddArrangedSubview(buttonViewControllerNativeAuto.View);
     }
 
     static (NSScrollView, NSStackView) CreateContent(NSLayoutGuide safeArea)
